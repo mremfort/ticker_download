@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from datetime import datetime
 
 # Function to fetch stock or index data and
-st. set_page_config(layout="wide")
+st. set_page_config(layout="wide", page_title="Data Viewer",page_icon=':bar_chart:')
 def fetch_stock_data(ticker, start_date, end_date):
     stock = yf.Ticker(ticker)
 
