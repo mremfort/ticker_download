@@ -4,7 +4,8 @@ import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
 
-# Function to fetch stock or index data and info
+# Function to fetch stock or index data and
+st. set_page_config(layout="wide")
 def fetch_stock_data(ticker, start_date, end_date):
     stock = yf.Ticker(ticker)
 
@@ -91,21 +92,26 @@ def calculate_performance(stock_data):
 # Streamlit UI
 st.title("Stock and Index Data Viewer")
 
-# Input for ticker symbol
-ticker = st.text_input("Enter Stock or Index Ticker Symbol", "")
+with st.sidebar:
+    st.title("Settings")
+    # Input for ticker symbol
+    ticker = st.text_input("Enter Stock or Index Ticker Symbol", "")
 
 # Initialize start_date and end_date as None
 start_date = None
-end_date = st.date_input("End Date", datetime.today())
+end_date = None
 
 # Fetch data when ticker is entered
 if ticker:
+
     # Fetch data from Yahoo Finance
     stock_data, company_name, company_desc, first_available_date, bid_price = fetch_stock_data(ticker, "2000-01-01", end_date)
 
     if stock_data is not None:
         # Set start_date to the first available month
-        start_date = st.date_input("Start Date", first_available_date)
+        with st.sidebar:
+            start_date = st.date_input("Start Date", first_available_date)
+            end_date = st.date_input("End Date", datetime.today())
 
         # Display company or index info
         st.subheader(f"Name: {company_name}")
@@ -168,7 +174,7 @@ if ticker:
             # Generate Excel file when button is clicked
             excel_filename = prepare_for_export(
                 stock_data_monthly[['Formatted Date', 'Adj Close', '% Change']], ticker, start_date, end_date)
-            st.success(f"Data exported successfully!")
+            st.success(f"File Created successfully!")
 
         # If excel_filename is generated, provide download link
         if excel_filename:
